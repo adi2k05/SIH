@@ -2,39 +2,70 @@ using UnityEngine;
 
 public class BuildSpot : MonoBehaviour
 {
-    public GameObject ecoPrefab;       // e.g., Solar Panel
-    public GameObject nonEcoPrefab;    // e.g., Coal Plant
-    public int ecoGreenPoints = 10;
-    public int nonEcoGreenPoints = -10;
+    public GameObject ecoPrefab;
+    public GameObject nonEcoPrefab;
+    public int ecoCost = 20;
+    public int nonEcoCost = 10;
+
+    public GameObject choicePanel; // assign per spot in Inspector
 
     private bool built = false;
-    public GameObject choicePanel;
 
-    public Vector3 buildOffset = new Vector3(0, 0.5f, 2f); // tweak these values in Inspector
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && !built)
+        {
+            UIManager.Instance.ShowChoices(this, choicePanel);
+        }
+    }
 
-    public void BuildEco(){
+    public void BuildEco()
+    {
         if (built) return;
-    Instantiate(ecoPrefab, transform.position + buildOffset, Quaternion.identity);
-    GameManager.Instance.UpdateGreenIndex(ecoGreenPoints);
-    built = true;
-    Destroy(gameObject);
+
+        if (GameManager.Instance.CanAfford(ecoCost))
+        {
+            GameManager.Instance.Spend(ecoCost);
+            GameObject newBuilding = Instantiate(
+                ecoPrefab,
+                transform.position + Vector3.up * 0.5f,
+                Quaternion.identity
+            );
+            built = true;
+
+            Building building = newBuilding.GetComponent<Building>();
+            if (building != null) GameManager.Instance.AddBuilding(building);
+
+            Destroy(gameObject);
+        }
+        else
+        {
+            UIManager.Instance.ShowMessage("Not enough Green Index for Eco building!");
+        }
     }
 
     public void BuildNonEco()
     {
         if (built) return;
-        Instantiate(nonEcoPrefab, transform.position + buildOffset, Quaternion.identity);
-        GameManager.Instance.UpdateGreenIndex(nonEcoGreenPoints);
-        built = true;
-        Destroy(gameObject);
+
+        if (GameManager.Instance.CanAfford(nonEcoCost))
+        {
+            GameManager.Instance.Spend(nonEcoCost);
+            GameObject newBuilding = Instantiate(
+                nonEcoPrefab,
+                transform.position + Vector3.up * 0.5f,
+                Quaternion.identity
+            );
+            built = true;
+
+            Building building = newBuilding.GetComponent<Building>();
+            if (building != null) GameManager.Instance.AddBuilding(building);
+
+            Destroy(gameObject);
         }
-
-
-    private void OnTriggerEnter(Collider other)
-{
-    if (other.CompareTag("Player"))
-    {
-        UIManager.Instance.ShowChoices(this, choicePanel);
+        else
+        {
+            UIManager.Instance.ShowMessage("Not enough Green Index for Non-Eco building!");
+        }
     }
-}
 }

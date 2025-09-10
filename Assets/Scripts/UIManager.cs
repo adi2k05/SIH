@@ -1,15 +1,13 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
     public TMP_Text greenIndexText;
-
-    // Allow multiple choice panels
-    public List<GameObject> choicePanels = new List<GameObject>();
+    public TMP_Text messageText; // assign in Inspector
 
     private BuildSpot currentSpot;
     private GameObject activePanel;
@@ -41,5 +39,19 @@ public class UIManager : MonoBehaviour
     public void UpdateGreenIndexUI(int value)
     {
         greenIndexText.text = "Green Index: " + value;
+    }
+
+    // 🆕 Show a temporary message
+    public void ShowMessage(string msg, float duration = 2f)
+    {
+        StopAllCoroutines();
+        StartCoroutine(ShowMessageRoutine(msg, duration));
+    }
+
+    private IEnumerator ShowMessageRoutine(string msg, float duration)
+    {
+        messageText.text = msg;
+        yield return new WaitForSeconds(duration);
+        messageText.text = "";
     }
 }

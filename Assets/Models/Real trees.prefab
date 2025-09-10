@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1274369831627171599}
   - component: {fileID: 4916255252487224460}
   m_Layer: 0
-  m_Name: Windmill
+  m_Name: Real trees
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

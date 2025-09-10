@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5834900152417026642}
   - component: {fileID: 2073112319636356147}
   - component: {fileID: 2475729177925986969}
+  - component: {fileID: 4975735927336836222}
   m_Layer: 0
   m_Name: FossilFuelCombustion
   m_TagString: Untagged
@@ -111,3 +112,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4975735927336836222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2171376039383875348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e4ab27f4890b5144847a2ecb21c554b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Building
+  ecoGain: -1
