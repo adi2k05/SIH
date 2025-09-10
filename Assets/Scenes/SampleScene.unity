@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 262398840}
   - component: {fileID: 262398839}
   m_Layer: 5
-  m_Name: Coal stats
+  m_Name: Artificial tree stats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,9 +331,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Artificial trees
 
-    Green Index: 0/s
+    Green Index: -1/s
 
-    Cost: 20 GI'
+    Cost: 50 GI'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -748,7 +748,7 @@ MonoBehaviour:
 
     Green Index: -1/s
 
-    Cost: 20 GI'
+    Cost: 40 GI'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1197,7 +1197,7 @@ MonoBehaviour:
 
     Green Index: +2/s
 
-    Cost: 30 GI'
+    Cost: 50 GI'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1310,7 +1310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20, y: -20}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &606297011
@@ -1424,7 +1424,7 @@ GameObject:
   - component: {fileID: 740386724}
   - component: {fileID: 740386723}
   m_Layer: 5
-  m_Name: Solar stas
+  m_Name: Real tree stats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1473,7 +1473,7 @@ MonoBehaviour:
 
     Green Index: +2/s
 
-    Cost: 30 GI'
+    Cost: 75 GI'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1798,8 +1798,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildSpot
   ecoPrefab: {fileID: 1654855971717880639, guid: 276bfa690e7709f4dbce668a42965e59, type: 3}
   nonEcoPrefab: {fileID: 2171376039383875348, guid: 07343b595e724f3429c5fe6d03774905, type: 3}
-  ecoCost: 30
-  nonEcoCost: 20
+  ecoCost: 75
+  nonEcoCost: 50
   choicePanel: {fileID: 1694159008}
 --- !u!65 &803149478
 BoxCollider:
@@ -3502,8 +3502,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildSpot
   ecoPrefab: {fileID: 1654855971717880639, guid: dac49ce1ce92e244dbacf957e9d790f4, type: 3}
   nonEcoPrefab: {fileID: 2171376039383875348, guid: 21fccad879b6ad246bc74f7dde5795cf, type: 3}
-  ecoCost: 30
-  nonEcoCost: 20
+  ecoCost: 50
+  nonEcoCost: 40
   choicePanel: {fileID: 1138945563}
 --- !u!65 &1553037821
 BoxCollider:
