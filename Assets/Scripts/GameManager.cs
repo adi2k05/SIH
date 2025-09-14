@@ -40,6 +40,11 @@ public class GameManager : MonoBehaviour
                 unlockTriggered = true;
                 UnlockChoice();
             }
+
+            if (greenIndex < 0)
+            {
+                GameOver();
+            }
         }
     }
 
@@ -78,11 +83,16 @@ public class GameManager : MonoBehaviour
 
     public void OnNonEcoSituationChosen()
     {
-        greenIndex -= 50; 
-        AddVirtualBuilding(-1); 
+        greenIndex -= 50;
+        AddVirtualBuilding(-1);
         UIManager.Instance.UpdateGreenIndexUI(greenIndex);
 
         if (unlockChoicePanel != null)
             unlockChoicePanel.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over! Green Index dropped below 0.");
     }
 }
