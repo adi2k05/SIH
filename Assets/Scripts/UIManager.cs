@@ -57,8 +57,13 @@ public class UIManager : MonoBehaviour
     }
     public void OnSituationEcoClicked()
     {
-    GameManager.Instance.OnEcoSituationChosen();
+        GameManager.Instance.OnEcoSituationChosen();
     }
+    
+    public void OnSituationNonEcoClicked()
+{
+    GameManager.Instance.OnNonEcoSituationChosen();
+}
 
 
 }

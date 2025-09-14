@@ -75,4 +75,14 @@ public class GameManager : MonoBehaviour
         if (unlockChoicePanel != null)
             unlockChoicePanel.SetActive(false);
     }
+
+    public void OnNonEcoSituationChosen()
+    {
+        greenIndex -= 50; 
+        AddVirtualBuilding(-1); 
+        UIManager.Instance.UpdateGreenIndexUI(greenIndex);
+
+        if (unlockChoicePanel != null)
+            unlockChoicePanel.SetActive(false);
+    }
 }
