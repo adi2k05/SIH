@@ -6,12 +6,17 @@ public class BuildSpot : MonoBehaviour
     [Header("Build Mode")]
     public BuildMode buildMode = BuildMode.ChoicePanel;
 
+    [Header("Prefabs")]
     public GameObject ecoPrefab;
     public GameObject nonEcoPrefab;
     public int ecoCost = 20;
     public int nonEcoCost = 10;
 
+    [Header("UI")]
     public GameObject choicePanel; // only used if mode = ChoicePanel
+
+    [Header("Spawn Settings")]
+    public Transform spawnPoint; // assign in Inspector (empty child as reference)
 
     private bool built = false;
 
@@ -37,63 +42,59 @@ public class BuildSpot : MonoBehaviour
     }
 
     public void BuildEco()
-{
-    if (built) return;
-
-    if (GameManager.Instance.CanAfford(ecoCost))
     {
-        GameManager.Instance.Spend(ecoCost);
+        if (built) return;
 
-        // 👉 Spawn a little in front of the build spot
-        Vector3 spawnPos = transform.position + transform.forward * 5f + Vector3.up * 0.5f;
+        if (GameManager.Instance.CanAfford(ecoCost))
+        {
+            GameManager.Instance.Spend(ecoCost);
 
-        GameObject newBuilding = Instantiate(
-            ecoPrefab,
-            spawnPos,
-            Quaternion.identity
-        );
+            // Spawn at this BuildSpot’s defined transform
+            GameObject newBuilding = Instantiate(
+                ecoPrefab,
+                spawnPoint.position,
+                spawnPoint.rotation
+            );
+            newBuilding.transform.localScale = spawnPoint.localScale;
 
-        built = true;
+            built = true;
 
-        Building building = newBuilding.GetComponent<Building>();
-        if (building != null) GameManager.Instance.AddBuilding(building);
+            Building building = newBuilding.GetComponent<Building>();
+            if (building != null) GameManager.Instance.AddBuilding(building);
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
+        else
+        {
+            UIManager.Instance.ShowMessage("Not enough Green Index for Eco building!", Color.red, 2f);
+        }
     }
-    else
+
+    public void BuildNonEco()
     {
-        UIManager.Instance.ShowMessage("Not enough Green Index for Eco building!",Color.red,2f);
+        if (built) return;
+
+        if (GameManager.Instance.CanAfford(nonEcoCost))
+        {
+            GameManager.Instance.Spend(nonEcoCost);
+
+            GameObject newBuilding = Instantiate(
+                nonEcoPrefab,
+                spawnPoint.position,
+                spawnPoint.rotation
+            );
+            newBuilding.transform.localScale = spawnPoint.localScale;
+
+            built = true;
+
+            Building building = newBuilding.GetComponent<Building>();
+            if (building != null) GameManager.Instance.AddBuilding(building);
+
+            Destroy(gameObject);
+        }
+        else
+        {
+            UIManager.Instance.ShowMessage("Not enough Green Index for Non-Eco building!", Color.red, 2f);
+        }
     }
-}
-
-
-public void BuildNonEco()
-{
-    if (built) return;
-
-    if (GameManager.Instance.CanAfford(nonEcoCost))
-    {
-        GameManager.Instance.Spend(nonEcoCost);
-
-        // Get player's forward position
-        Vector3 spawnPos = transform.position + transform.forward * 5f + Vector3.up * 0.5f;
-
-        GameObject newBuilding = Instantiate(
-            nonEcoPrefab,
-            spawnPos + Vector3.up * 0.5f,
-            Quaternion.identity
-        );
-        built = true;
-
-        Building building = newBuilding.GetComponent<Building>();
-        if (building != null) GameManager.Instance.AddBuilding(building);
-
-        Destroy(gameObject);
-    }
-    else
-    {
-        UIManager.Instance.ShowMessage("Not enough Green Index for Non-Eco building!",Color.red,2f);
-    }
-}
-
 }
