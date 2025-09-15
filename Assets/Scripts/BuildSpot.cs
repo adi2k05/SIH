@@ -62,7 +62,7 @@ public class BuildSpot : MonoBehaviour
     }
     else
     {
-        UIManager.Instance.ShowMessage("Not enough Green Index for Eco building!");
+        UIManager.Instance.ShowMessage("Not enough Green Index for Eco building!",Color.red,2f);
     }
 }
 
@@ -92,7 +92,7 @@ public void BuildNonEco()
     }
     else
     {
-        UIManager.Instance.ShowMessage("Not enough Green Index for Non-Eco building!");
+        UIManager.Instance.ShowMessage("Not enough Green Index for Non-Eco building!",Color.red,2f);
     }
 }
 
