@@ -12,7 +12,6 @@ public class UIManager : MonoBehaviour
     private BuildSpot currentSpot;
     private GameObject activePanel;
 
-
     private void Awake()
     {
         Instance = this;
@@ -42,29 +41,40 @@ public class UIManager : MonoBehaviour
         greenIndexText.text = "Green Index: " + value;
     }
 
-    // 🆕 Show a temporary message
-    public void ShowMessage(string msg, float duration = 2f)
+    // 🆕 Show a temporary message (with color support)
+    public void ShowMessage(string msg, Color color, float duration = 2f)
     {
         StopAllCoroutines();
-        StartCoroutine(ShowMessageRoutine(msg, duration));
+        StartCoroutine(ShowMessageRoutine(msg, color, duration));
     }
 
-    private IEnumerator ShowMessageRoutine(string msg, float duration)
+    private IEnumerator ShowMessageRoutine(string msg, Color color, float duration)
     {
         messageText.text = msg;
+        messageText.color = color;
         yield return new WaitForSeconds(duration);
         messageText.text = "";
     }
+
     public void OnSituationEcoClicked()
     {
         GameManager.Instance.OnEcoSituationChosen();
     }
-    
+
     public void OnSituationNonEcoClicked()
-{
-    GameManager.Instance.OnNonEcoSituationChosen();
+    {
+        GameManager.Instance.OnNonEcoSituationChosen();
+    }
+
+    public void OnSituationEcoClickedStatic()
+    {
+        GameManager.Instance.OnEcoSituationChosenStatic();
+        ShowMessage("+20 GI", Color.green, 2f); // ✅ green message
+    }
+
+    public void OnSituationNonEcoClickedStatic()
+    {
+        GameManager.Instance.OnNonEcoSituationChosenStatic();
+        ShowMessage("-20 GI", Color.red, 2f); // ✅ red message
+    }
 }
-
-
-}
-

@@ -1,6 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class Unlockable
+{
+    public int threshold;              // GI needed
+    public GameObject panel;           // Panel to show
+    [HideInInspector] public bool triggered = false; // To make sure it shows once
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -12,9 +20,8 @@ public class GameManager : MonoBehaviour
 
     private float timer = 0f;
 
-    public GameObject unlockChoicePanel;
-    public int unlockThreshold = 50;
-    private bool unlockTriggered = false;
+    [Header("Unlockable Situations")]
+    public List<Unlockable> unlockables; // Assign in Inspector
 
     private void Awake()
     {
@@ -29,22 +36,22 @@ public class GameManager : MonoBehaviour
             timer = 0f;
 
             foreach (var gain in ecoGains)
-            {
                 greenIndex += gain;
-            }
 
             UIManager.Instance.UpdateGreenIndexUI(greenIndex);
 
-            if (!unlockTriggered && greenIndex >= unlockThreshold)
+            // 🔓 Check each unlockable
+            foreach (var u in unlockables)
             {
-                unlockTriggered = true;
-                UnlockChoice();
+                if (!u.triggered && greenIndex >= u.threshold)
+                {
+                    u.triggered = true;
+                    UnlockChoice(u);
+                }
             }
 
             if (greenIndex < 0)
-            {
                 GameOver();
-            }
         }
     }
 
@@ -66,33 +73,53 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateGreenIndexUI(greenIndex);
     }
 
-    private void UnlockChoice()
+    private void UnlockChoice(Unlockable u)
     {
-        if (unlockChoicePanel != null)
-            unlockChoicePanel.SetActive(true);
+        if (u.panel != null)
+            u.panel.SetActive(true);
+        else
+            Debug.LogWarning("Unlock panel not assigned for threshold " + u.threshold);
     }
 
-    // 🆕 Called when player picks the eco situation
+    // Example situation choices
     public void OnEcoSituationChosen()
     {
-        GameManager.Instance.greenIndex -= 100;
-        AddVirtualBuilding(1); // +1 GI/sec forever
-        if (unlockChoicePanel != null)
-            unlockChoicePanel.SetActive(false);
+        greenIndex -= 50;
+        AddVirtualBuilding(2); // +1 GI/sec forever
+        CloseAllPanels();
     }
 
     public void OnNonEcoSituationChosen()
     {
-        greenIndex -= 50;
-        AddVirtualBuilding(-1);
+        AddVirtualBuilding(-1); // -1 GI/sec forever
         UIManager.Instance.UpdateGreenIndexUI(greenIndex);
+        CloseAllPanels();
+    }
 
-        if (unlockChoicePanel != null)
-            unlockChoicePanel.SetActive(false);
+    private void CloseAllPanels()
+    {
+        foreach (var u in unlockables)
+        {
+            if (u.panel != null) u.panel.SetActive(false);
+        }
+    }
+
+    public void OnEcoSituationChosenStatic()
+    {
+        greenIndex += 20;
+        CloseAllPanels();
+    }
+
+    public void OnNonEcoSituationChosenStatic()
+    {
+        greenIndex -= 20;
+        UIManager.Instance.UpdateGreenIndexUI(greenIndex);
+        CloseAllPanels();
     }
 
     public void GameOver()
     {
         Debug.Log("Game Over! Green Index dropped below 0.");
+        // You could load a Game Over scene here
     }
 }
