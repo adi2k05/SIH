@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     private BuildSpot currentSpot;
     private GameObject activePanel;
 
+
     private void Awake()
     {
         Instance = this;
@@ -54,4 +55,16 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
         messageText.text = "";
     }
+    public void OnSituationEcoClicked()
+    {
+        GameManager.Instance.OnEcoSituationChosen();
+    }
+    
+    public void OnSituationNonEcoClicked()
+{
+    GameManager.Instance.OnNonEcoSituationChosen();
 }
+
+
+}
+

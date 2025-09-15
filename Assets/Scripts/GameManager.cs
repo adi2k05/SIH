@@ -6,9 +6,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public int greenIndex = 0;
-    public List<Building> buildings = new List<Building>();
+
+    // Allow both real Buildings and VirtualBuildings
+    public List<int> ecoGains = new List<int>();
 
     private float timer = 0f;
+
+    public GameObject unlockChoicePanel;
+    public int unlockThreshold = 50;
+    private bool unlockTriggered = false;
 
     private void Awake()
     {
@@ -21,27 +27,72 @@ public class GameManager : MonoBehaviour
         if (timer >= 1f)
         {
             timer = 0f;
-            foreach (var b in buildings)
+
+            foreach (var gain in ecoGains)
             {
-                greenIndex += b.ecoGain;
+                greenIndex += gain;
             }
+
             UIManager.Instance.UpdateGreenIndexUI(greenIndex);
+
+            if (!unlockTriggered && greenIndex >= unlockThreshold)
+            {
+                unlockTriggered = true;
+                UnlockChoice();
+            }
+
+            if (greenIndex < 0)
+            {
+                GameOver();
+            }
         }
     }
 
     public void AddBuilding(Building building)
     {
-        buildings.Add(building);
+        ecoGains.Add(building.ecoGain);
     }
 
-    public bool CanAfford(int cost)
+    public void AddVirtualBuilding(int ecoGain)
     {
-        return greenIndex >= cost;
+        ecoGains.Add(ecoGain);
     }
+
+    public bool CanAfford(int cost) => greenIndex >= cost;
 
     public void Spend(int cost)
     {
         greenIndex -= cost;
         UIManager.Instance.UpdateGreenIndexUI(greenIndex);
+    }
+
+    private void UnlockChoice()
+    {
+        if (unlockChoicePanel != null)
+            unlockChoicePanel.SetActive(true);
+    }
+
+    // 🆕 Called when player picks the eco situation
+    public void OnEcoSituationChosen()
+    {
+        GameManager.Instance.greenIndex -= 100;
+        AddVirtualBuilding(1); // +1 GI/sec forever
+        if (unlockChoicePanel != null)
+            unlockChoicePanel.SetActive(false);
+    }
+
+    public void OnNonEcoSituationChosen()
+    {
+        greenIndex -= 50;
+        AddVirtualBuilding(-1);
+        UIManager.Instance.UpdateGreenIndexUI(greenIndex);
+
+        if (unlockChoicePanel != null)
+            unlockChoicePanel.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over! Green Index dropped below 0.");
     }
 }
